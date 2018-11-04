@@ -79,8 +79,19 @@ handlers.notFound = function(data, callback){
 handlers.ping = function(data, callback){
     callback(200);
 }
+handlers.hello = function(data, callback){        
+    friend_name = "stranger";
+    data_received = JSON.parse(data.payload);
+    if (data_received.hasOwnProperty("name")) {
+        friend_name = data_received["name"];
+    }
+
+    sv_response = {"hi": friend_name}
+    callback(200, sv_response);
+}
 
 var router = {
     "ping": handlers.ping, 
-    "sample" : handlers.sample
+    "sample": handlers.sample,
+    "hello": handlers. hello
 };
