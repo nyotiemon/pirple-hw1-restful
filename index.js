@@ -5,6 +5,23 @@ var StringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config');
 var fs = require('fs');
 
+var _data = require('./lib/data');
+
+// TESTING, Delete later
+// _data.create('test', 'newFile', {'foo': 'bar'}, function(err){
+//     console.log('err:', err);
+// });
+// _data.read('test', 'newFile', function(err, data){
+//     console.log('err:', err, '. data:', data);
+// });
+// _data.update('test', 'newFile', {'bar': 'foo'}, function(err){
+//     console.log('err:', err);
+// });
+// _data.delete('test', 'newFile', function(err){
+//     console.log('err:', err);
+// });
+
+
 var httpServer = http.createServer(function(req, res){
     unifiedServer(req, res);
 });
