@@ -2,10 +2,14 @@ var http = require('http');
 var https = require('https');
 var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
-var config = require('./config');
+var config = require('./lib/config');
 var fs = require('fs');
 
+
+var handlers = require('./lib/handlers');
+
 var _data = require('./lib/data');
+var helpers = require('./lib/helpers');
 
 var httpServer = http.createServer(function(req, res){
     unifiedServer(req, res);
@@ -53,7 +57,7 @@ var unifiedServer = function(req, res){
             'queryStringObject': queryStringObject,
             'method': method,
             'headers': headers,
-            'payload': buffer
+            'payload': helpers.parseJsonToObject(buffer)
         };
         
         chosenHandler(data, function(statusCode, payload){
@@ -71,29 +75,9 @@ var unifiedServer = function(req, res){
     });
 };
 
-var handlers = {}
-handlers.sample = function(data, callback){
-    callback(406, {"sample": "sample handler"});
-};
-handlers.notFound = function(data, callback){
-    callback(404);
-};
-handlers.ping = function(data, callback){
-    callback(200);
-}
-handlers.hello = function(data, callback){        
-    friend_name = "stranger";
-    data_received = JSON.parse(data.payload);
-    if (data_received.hasOwnProperty("name")) {
-        friend_name = data_received["name"];
-    }
-
-    sv_response = {"hi": friend_name}
-    callback(200, sv_response);
-}
-
 var router = {
     "ping": handlers.ping, 
     "sample": handlers.sample,
-    "hello": handlers. hello
+    "hello": handlers.hello,
+    "users": handlers.users
 };
